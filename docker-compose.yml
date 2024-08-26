@@ -1,0 +1,59 @@
+version: '3'
+
+networks:
+  private:
+
+volumes:
+  mysql_data:
+
+services:
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin
+      - MYSQL_DATABASE=database
+      - TZ=Asia/Jakarta
+      - 3306:3306
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      interval: 2s
+      timeout: 2s
+      retries: 10
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - :3306 # re-configure if you want to expose the database
+    networks:
+      - private
+
+  init:
+    image: kp/xyz:0.0.0
+    build:
+      context: .
+    environment:
+      - GOOSE_DRIVER=mysql
+      - GOOSE_DBSTRING=admin:admin@tcp(mysql:3306)/database
+    command: /migration -dir=/data/migrations up
+    networks:
+      - private
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  api:
+    image: kp/xyz:0.0.0
+    build:
+      context: .
+    command: /api
+    environment:
+      - ENV=production
+      - PORT=8080
+      - DSN=admin:admin@tcp(mysql:3306)/database
+    ports:
+      - 8080:8080
+    networks:
+      - private
+    depends_on:
+      - init

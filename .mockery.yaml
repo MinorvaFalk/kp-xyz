@@ -1,0 +1,13 @@
+quiet: true
+disable-version-string: true
+dir: mocks/{{ replaceAll .InterfaceDirRelative "internal" "internal_" }}
+mockname: "{{.InterfaceName}}"
+outpkg: "{{.PackageName}}"
+filename: "{{.InterfaceName}}.go"
+packages:
+  kp/internal/api:
+    interfaces:
+      Handler:
+      Repository:
+      Usecase:
+
