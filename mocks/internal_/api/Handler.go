@@ -20,6 +20,52 @@ func (_m *Handler) EXPECT() *Handler_Expecter {
 	return &Handler_Expecter{mock: &_m.Mock}
 }
 
+// CreateAccount provides a mock function with given fields: c
+func (_m *Handler) CreateAccount(c echo.Context) error {
+	ret := _m.Called(c)
+
+	if len(ret) == 0 {
+		panic("no return value specified for CreateAccount")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(echo.Context) error); ok {
+		r0 = rf(c)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// Handler_CreateAccount_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateAccount'
+type Handler_CreateAccount_Call struct {
+	*mock.Call
+}
+
+// CreateAccount is a helper method to define mock.On call
+//   - c echo.Context
+func (_e *Handler_Expecter) CreateAccount(c interface{}) *Handler_CreateAccount_Call {
+	return &Handler_CreateAccount_Call{Call: _e.mock.On("CreateAccount", c)}
+}
+
+func (_c *Handler_CreateAccount_Call) Run(run func(c echo.Context)) *Handler_CreateAccount_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(echo.Context))
+	})
+	return _c
+}
+
+func (_c *Handler_CreateAccount_Call) Return(_a0 error) *Handler_CreateAccount_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *Handler_CreateAccount_Call) RunAndReturn(run func(echo.Context) error) *Handler_CreateAccount_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // CreateAccountTransaction provides a mock function with given fields: c
 func (_m *Handler) CreateAccountTransaction(c echo.Context) error {
 	ret := _m.Called(c)

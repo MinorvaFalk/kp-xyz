@@ -17,25 +17,26 @@ mysql:
 
 migrate-status:
 	export GOOSE_DRIVER=$(GOOSE_DRIVER) GOOSE_DBSTRING=$(GOOSE_DBSTRING); \
-	goose -dir migration status
+	goose -dir migrations status
 
 migrate-up:
 	export GOOSE_DRIVER=$(GOOSE_DRIVER) GOOSE_DBSTRING=$(GOOSE_DBSTRING); \
-	goose -dir migration up
+	goose -dir migrations up
 
 migrate-down:
 	export GOOSE_DRIVER=$(GOOSE_DRIVER) GOOSE_DBSTRING=$(GOOSE_DBSTRING); \
-	goose -dir migration down
+	goose -dir migrations down
 
 migrate-reset:
 	export GOOSE_DRIVER=$(GOOSE_DRIVER) GOOSE_DBSTRING=$(GOOSE_DBSTRING); \
-	goose -dir migration reset
+	goose -dir migrations reset
 
 run:
 	go run cmd/api/*.go
 
-swag:
-	swag init --parseDependency --parseInternal --parseDepth 1 -g ./cmd/api/main.go
+.PHONY: mocks
+mocks:
+	sleep 1 && rm -rfd mocks && mockery
 
 build:
 	docker build -t ${IMAGE_NAME}:${IMAGE_VERSION} .

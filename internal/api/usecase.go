@@ -11,6 +11,7 @@ type Usecase interface {
 	GetAccountTransactions(ctx context.Context, accountID int64) ([]*model.AccountTransaction, error)
 
 	CreateTransaction(ctx context.Context, req *model.RequestCreateTransaction) (*model.AccountTransaction, error)
+	CreateAccount(ctx context.Context, req *model.RequestCreateAccount) (*model.AccountCreated, error)
 
 	ValidateAccountLimit(ctx context.Context, req *model.RequestCreateTransaction) error
 }

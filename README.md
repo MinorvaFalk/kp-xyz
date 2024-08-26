@@ -24,6 +24,16 @@
 
 ## How to Run
 
+Environment variables
+
+```bash
+# .env or OS ENV
+
+PORT=8080
+DSN=<user>:<pass>@tcp(<host>:<port>)/<database>?charset=utf8mb4&parseTime=True&loc=Local
+ENV=development|production
+```
+
 Using Docker Compose
 
 ```bash

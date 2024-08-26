@@ -16,10 +16,12 @@ type Repository interface {
 
 	GetListAccounts(ctx context.Context) ([]*entity.Accounts, error)
 	GetAccount(ctx context.Context, id int64) (*entity.Accounts, error)
+	CreateAccount(ctx context.Context, data *entity.Accounts) error
 
 	GetListLimits(ctx context.Context) ([]*entity.Limits, error)
 	GetLimit(ctx context.Context, id int64) (*entity.Limits, error)
 	GetAccountLimits(ctx context.Context, accountID int64) ([]*model.AccountLimits, error)
+	CreateLimits(ctx context.Context, data ...*entity.Limits) error
 	UpdateLimit(ctx context.Context, limits *entity.Limits) error
 
 	GetListTransactions(ctx context.Context) ([]*entity.Transactions, error)

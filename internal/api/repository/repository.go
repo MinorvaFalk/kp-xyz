@@ -115,6 +115,19 @@ func (r *Repository) GetAccount(ctx context.Context, id int64) (*entity.Accounts
 	return &data, nil
 }
 
+func (r *Repository) CreateAccount(ctx context.Context, data *entity.Accounts) error {
+	res := r.db.Create(data)
+	if err := res.Error; err != nil {
+		return exception.NewDBQueryError(err)
+	}
+
+	if res.RowsAffected == 0 {
+		return exception.NewDBQueryError(nil, "failed to insert data")
+	}
+
+	return nil
+}
+
 func (r *Repository) GetListLimits(ctx context.Context) ([]*entity.Limits, error) {
 	var data []*entity.Limits
 
@@ -135,6 +148,19 @@ func (r *Repository) GetLimit(ctx context.Context, id int64) (*entity.Limits, er
 	}
 
 	return &data, nil
+}
+
+func (r *Repository) CreateLimits(ctx context.Context, data ...*entity.Limits) error {
+	res := r.db.Create(data)
+	if err := res.Error; err != nil {
+		return exception.NewDBQueryError(err)
+	}
+
+	if res.RowsAffected == 0 {
+		return exception.NewDBQueryError(nil, "failed to insert data")
+	}
+
+	return nil
 }
 
 func (r *Repository) UpdateLimit(ctx context.Context, limits *entity.Limits) error {
