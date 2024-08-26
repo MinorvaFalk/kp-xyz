@@ -26,6 +26,53 @@ func (_m *Repository) EXPECT() *Repository_Expecter {
 	return &Repository_Expecter{mock: &_m.Mock}
 }
 
+// CreateAccount provides a mock function with given fields: ctx, data
+func (_m *Repository) CreateAccount(ctx context.Context, data *entity.Accounts) error {
+	ret := _m.Called(ctx, data)
+
+	if len(ret) == 0 {
+		panic("no return value specified for CreateAccount")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, *entity.Accounts) error); ok {
+		r0 = rf(ctx, data)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// Repository_CreateAccount_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateAccount'
+type Repository_CreateAccount_Call struct {
+	*mock.Call
+}
+
+// CreateAccount is a helper method to define mock.On call
+//   - ctx context.Context
+//   - data *entity.Accounts
+func (_e *Repository_Expecter) CreateAccount(ctx interface{}, data interface{}) *Repository_CreateAccount_Call {
+	return &Repository_CreateAccount_Call{Call: _e.mock.On("CreateAccount", ctx, data)}
+}
+
+func (_c *Repository_CreateAccount_Call) Run(run func(ctx context.Context, data *entity.Accounts)) *Repository_CreateAccount_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(*entity.Accounts))
+	})
+	return _c
+}
+
+func (_c *Repository_CreateAccount_Call) Return(_a0 error) *Repository_CreateAccount_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *Repository_CreateAccount_Call) RunAndReturn(run func(context.Context, *entity.Accounts) error) *Repository_CreateAccount_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // CreateCustomer provides a mock function with given fields: ctx, data
 func (_m *Repository) CreateCustomer(ctx context.Context, data *entity.Customers) error {
 	ret := _m.Called(ctx, data)
@@ -69,6 +116,67 @@ func (_c *Repository_CreateCustomer_Call) Return(_a0 error) *Repository_CreateCu
 }
 
 func (_c *Repository_CreateCustomer_Call) RunAndReturn(run func(context.Context, *entity.Customers) error) *Repository_CreateCustomer_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// CreateLimits provides a mock function with given fields: ctx, data
+func (_m *Repository) CreateLimits(ctx context.Context, data ...*entity.Limits) error {
+	_va := make([]interface{}, len(data))
+	for _i := range data {
+		_va[_i] = data[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	if len(ret) == 0 {
+		panic("no return value specified for CreateLimits")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, ...*entity.Limits) error); ok {
+		r0 = rf(ctx, data...)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// Repository_CreateLimits_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateLimits'
+type Repository_CreateLimits_Call struct {
+	*mock.Call
+}
+
+// CreateLimits is a helper method to define mock.On call
+//   - ctx context.Context
+//   - data ...*entity.Limits
+func (_e *Repository_Expecter) CreateLimits(ctx interface{}, data ...interface{}) *Repository_CreateLimits_Call {
+	return &Repository_CreateLimits_Call{Call: _e.mock.On("CreateLimits",
+		append([]interface{}{ctx}, data...)...)}
+}
+
+func (_c *Repository_CreateLimits_Call) Run(run func(ctx context.Context, data ...*entity.Limits)) *Repository_CreateLimits_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		variadicArgs := make([]*entity.Limits, len(args)-1)
+		for i, a := range args[1:] {
+			if a != nil {
+				variadicArgs[i] = a.(*entity.Limits)
+			}
+		}
+		run(args[0].(context.Context), variadicArgs...)
+	})
+	return _c
+}
+
+func (_c *Repository_CreateLimits_Call) Return(_a0 error) *Repository_CreateLimits_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *Repository_CreateLimits_Call) RunAndReturn(run func(context.Context, ...*entity.Limits) error) *Repository_CreateLimits_Call {
 	_c.Call.Return(run)
 	return _c
 }

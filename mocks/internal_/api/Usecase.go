@@ -22,6 +22,65 @@ func (_m *Usecase) EXPECT() *Usecase_Expecter {
 	return &Usecase_Expecter{mock: &_m.Mock}
 }
 
+// CreateAccount provides a mock function with given fields: ctx, req
+func (_m *Usecase) CreateAccount(ctx context.Context, req *model.RequestCreateAccount) (*model.AccountCreated, error) {
+	ret := _m.Called(ctx, req)
+
+	if len(ret) == 0 {
+		panic("no return value specified for CreateAccount")
+	}
+
+	var r0 *model.AccountCreated
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, *model.RequestCreateAccount) (*model.AccountCreated, error)); ok {
+		return rf(ctx, req)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, *model.RequestCreateAccount) *model.AccountCreated); ok {
+		r0 = rf(ctx, req)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*model.AccountCreated)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, *model.RequestCreateAccount) error); ok {
+		r1 = rf(ctx, req)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Usecase_CreateAccount_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateAccount'
+type Usecase_CreateAccount_Call struct {
+	*mock.Call
+}
+
+// CreateAccount is a helper method to define mock.On call
+//   - ctx context.Context
+//   - req *model.RequestCreateAccount
+func (_e *Usecase_Expecter) CreateAccount(ctx interface{}, req interface{}) *Usecase_CreateAccount_Call {
+	return &Usecase_CreateAccount_Call{Call: _e.mock.On("CreateAccount", ctx, req)}
+}
+
+func (_c *Usecase_CreateAccount_Call) Run(run func(ctx context.Context, req *model.RequestCreateAccount)) *Usecase_CreateAccount_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(*model.RequestCreateAccount))
+	})
+	return _c
+}
+
+func (_c *Usecase_CreateAccount_Call) Return(_a0 *model.AccountCreated, _a1 error) *Usecase_CreateAccount_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Usecase_CreateAccount_Call) RunAndReturn(run func(context.Context, *model.RequestCreateAccount) (*model.AccountCreated, error)) *Usecase_CreateAccount_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // CreateTransaction provides a mock function with given fields: ctx, req
 func (_m *Usecase) CreateTransaction(ctx context.Context, req *model.RequestCreateTransaction) (*model.AccountTransaction, error) {
 	ret := _m.Called(ctx, req)

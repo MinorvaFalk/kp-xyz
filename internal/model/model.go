@@ -6,6 +6,17 @@ type RequestAccountID struct {
 	AccountID int64 `json:"account_id" validate:"required"`
 }
 
+type RequestCreateAccount struct {
+	Nik         string  `json:"nik" validate:"nik"`
+	FullName    string  `json:"full_name" validate:"required"`
+	LegalName   string  `json:"legal_name" validate:"required"`
+	BirthPlace  string  `json:"birth_place" validate:"required"`
+	BirthDate   string  `json:"birth_date" validate:"date"`
+	Salary      float64 `json:"salary" validate:"required"`
+	KtpPhoto    *string `json:"ktp_photo"`
+	SelfiePhoto *string `json:"selfie_photo"`
+}
+
 type RequestCreateTransaction struct {
 	AccountID int64   `json:"account_id" validate:"required"`
 	LimitID   int64   `json:"limit_id" validate:"required"`
@@ -51,4 +62,25 @@ type AccountProfile struct {
 	Salary      float64 `json:"salary"`
 	KtpPhoto    string  `json:"ktp_photo"`
 	SelfiePhoto string  `json:"selfie_photo"`
+}
+
+type AccountCreated struct {
+	AccountID   int64                   `json:"account_id"`
+	CustomerID  int64                   `json:"customer_id"`
+	Nik         string                  `json:"nik"`
+	FullName    string                  `json:"full_name"`
+	LegalName   string                  `json:"legal_name"`
+	BirthPlace  string                  `json:"birth_place"`
+	BirthDate   string                  `json:"birth_date"`
+	Salary      float64                 `json:"salary"`
+	KtpPhoto    string                  `json:"ktp_photo"`
+	SelfiePhoto string                  `json:"selfie_photo"`
+	Limits      []*AccountCreatedLimits `json:"limits"`
+}
+
+type AccountCreatedLimits struct {
+	ID            int64   `json:"id"`
+	Duration      int     `json:"duration"`
+	InitialAmount float64 `json:"initial_amount"`
+	CurrentAmount float64 `json:"current_amount"`
 }

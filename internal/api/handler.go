@@ -8,6 +8,7 @@ type Handler interface {
 	GetAccountTransactions(c echo.Context) error
 
 	CreateAccountTransaction(c echo.Context) error
+	CreateAccount(c echo.Context) error
 
 	ValidateCreateTransactionRequest(next echo.HandlerFunc) echo.HandlerFunc
 }

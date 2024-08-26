@@ -99,3 +99,32 @@ func (h *Handler) CreateAccountTransaction(c echo.Context) error {
 		Data:    res,
 	})
 }
+
+func (h *Handler) CreateAccount(c echo.Context) error {
+	req := new(model.RequestCreateAccount)
+	if err := c.Bind(req); err != nil {
+		return err
+	}
+	if err := c.Validate(req); err != nil {
+		return err
+	}
+
+	if req.KtpPhoto == nil {
+		req.KtpPhoto = &constant.PlaceHolderPhoto
+	}
+
+	if req.SelfiePhoto == nil {
+		req.SelfiePhoto = &constant.PlaceHolderPhoto
+	}
+
+	res, err := h.uc.CreateAccount(c.Request().Context(), req)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, model.HTTPResponse{
+		Status:  http.StatusOK,
+		Message: "SUCCESS",
+		Data:    res,
+	})
+}

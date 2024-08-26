@@ -5,6 +5,7 @@ import (
 	"kp/internal/api"
 	"kp/internal/entity"
 	"kp/internal/model"
+	"kp/pkg/constant"
 	"kp/pkg/exception"
 	"kp/pkg/logger"
 	"slices"
@@ -174,6 +175,68 @@ func (u *Usecase) CreateTransaction(ctx context.Context, req *model.RequestCreat
 		AdminFee:       tr.AdminFee,
 		Duration:       tr.Duration,
 		CurrentLimit:   &req.Limit.CurrentAmount,
+	}
+
+	return &data, nil
+}
+
+func (u *Usecase) CreateAccount(ctx context.Context, req *model.RequestCreateAccount) (*model.AccountCreated, error) {
+	var data model.AccountCreated
+
+	customers := entity.Customers{
+		Nik:         req.Nik,
+		FullName:    req.FullName,
+		LegalName:   req.LegalName,
+		BirthPlace:  req.BirthPlace,
+		BirthDate:   req.BirthDate,
+		Salary:      req.Salary,
+		KtpPhoto:    *req.KtpPhoto,
+		SelfiePhoto: *req.SelfiePhoto,
+	}
+
+	if err := u.repo.Trx(ctx, func(repo api.Repository) error {
+		if err := repo.CreateCustomer(ctx, &customers); err != nil {
+			return exception.NewDBQueryError(err)
+		}
+
+		accounts := entity.Accounts{
+			CustomerID: customers.ID,
+		}
+
+		if err := repo.CreateAccount(ctx, &accounts); err != nil {
+			return exception.NewDBQueryError(err)
+		}
+
+		limits := constant.DefaultLimits(accounts.ID)
+
+		if err := repo.CreateLimits(ctx, limits...); err != nil {
+			return exception.NewDBQueryError(err)
+		}
+
+		data.AccountID = accounts.ID
+		data.CustomerID = customers.ID
+		data.Nik = customers.Nik
+		data.FullName = customers.FullName
+		data.LegalName = customers.LegalName
+		data.BirthPlace = customers.BirthPlace
+		data.BirthDate = customers.BirthDate
+		data.Salary = customers.Salary
+		data.KtpPhoto = customers.KtpPhoto
+		data.SelfiePhoto = customers.SelfiePhoto
+		data.Limits = []*model.AccountCreatedLimits{}
+
+		for _, l := range limits {
+			data.Limits = append(data.Limits, &model.AccountCreatedLimits{
+				ID:            l.ID,
+				Duration:      l.Duration,
+				InitialAmount: l.InitialAmount,
+				CurrentAmount: l.CurrentAmount,
+			})
+		}
+
+		return nil
+	}); err != nil {
+		return nil, err
 	}
 
 	return &data, nil
