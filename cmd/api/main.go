@@ -4,8 +4,8 @@ import (
 	"kp/config"
 	"kp/internal/api/handler"
 	apirepository "kp/internal/api/repository"
-	"kp/internal/api/router"
 	apiusecase "kp/internal/api/usecase"
+	"kp/internal/router"
 	"kp/pkg/datasource"
 	"kp/pkg/logger"
 )

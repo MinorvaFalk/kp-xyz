@@ -16,11 +16,22 @@
 - [Goose](https://github.com/pressly/goose) (for database migration)
 - [Make](https://www.gnu.org/software/make/#download) (for running scripts)
 
+## App Dependencies
+
+- MySQL >= 5.7
+- Goose
+- Mockery
+
 ## How to Run
 
 Using Docker Compose
 
 ```bash
+# Build
+docker compose build
+# or
+make build
+
 # Run
 docker compose up -d
 
@@ -57,3 +68,66 @@ make run
 ## Application Flow
 
 ![app flow](./docs/app-flow.png)
+
+
+## Architecture
+
+```
+├── cmd
+│   ├── api
+│   └── migration
+├── config
+├── internal
+│   ├── api
+│   │   ├── handler
+│   │   ├── repository
+│   │   ├── router
+│   │   └── usecase
+│   ├── entity
+│   └── model
+├── migrations
+├── mocks
+├── pkg
+│   ├── constant
+│   ├── datasource
+│   ├── exception
+│   ├── helper
+│   ├── logger
+│   └── validation
+└── test
+
+```
+
+### CMD
+Folder ini berisi file `main.go` yang dapat dibuild menjadi executable sebagai entrypoint Docker.
+
+### Config
+package ini digunakan untuk membaca configuration aplikasi seperti **Environment Variables**. Untuk config ini sudah dapat membaca `file .env` dan `ENV OS`.
+
+### Internal
+Folder ini berisi core applikasi yang terdiri dari `api`, `entity`, dan `model`.
+
+#### API
+Package ini berisi handler, repository, router, dan usecase.
+
+- Handler -> atau bisa dibilang controller sebagai entrypoint dari http API.
+- Repository -> sebagai DTO dari Database ke API.
+- Usecase -> berisi business logic untuk mengolah data yang diterima dari repository.
+
+#### Entity
+Package ini berisi model yang digunakan oleh DTO yang memiliki struktur 1:1 dengan database schema.
+
+#### Model
+Package ini berisi model yang digunakan sebagai request dan response dari HTTP.
+
+#### Router
+Package ini berisi konfigurasi HTTP Router (Echo) yang digunakan oleh API.
+
+### Migrations
+Folder ini berisi file sql yang digunakan proses migrasi database.
+
+### Mocks
+Folder ini merupakan hasil generate dari library mockery untuk membuat `mocks` dalam proses testing.
+
+### Pkg
+Pkg sendiri merupakan folder yang berisi utilitas dan singleton yang dapat digunakan berulang kali seperti **database instance**, **logger**, **validator**, hingga **helper functions**.
